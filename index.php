@@ -1,14 +1,13 @@
-<?php
-  $titlu = "Biblioteca Mea";
-?>
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo $titlu; ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library</title>
 </head>
 <body>
-  <h1><?php echo $titlu; ?></h1>
-  <p>Serverul funcționează!</p>
+  <?php
+
+  ?>
 </body>
 </html>
