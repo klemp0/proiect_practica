@@ -2,13 +2,6 @@
     {
         "name": "nikita",
         "email": "nikita@gmail.com",
-        "password": "12345",
-        "repeat_password": "12345"
-    },
-    {
-        "name": "nikita",
-        "email": "caliniuc@gmail.com",
-        "password": "12345",
-        "repeat_password": "12345"
+        "password": "Nikita123"
     }
 ]
