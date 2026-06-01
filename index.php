@@ -19,27 +19,68 @@
       <img src="img/books.png" alt="" class="logo-img">
        <span class="logo-title">My Library</span>
     </div>
-    <div class="auth-card">
-        <div class="card-title" id="cardTitle">Enter Your Account</div>
-        <div class="tab-switcher">
-          <button class="tab-btn active" id="loginTab">Log In</button>
-          <button class="tab-btn" id="registerTab">Register</button>
-        </div>
-         <div class="form-group name-group" id="nameGroup">
-          <label class="form-label">Name</label>
-          <input class="form-input" type="text" placeholder="Your name">
-        </div>
-         <div class="form-group">
-          <label class="form-label">E-mail</label>
-          <input class="form-input" type="email" placeholder="email@example.com">
-        </div>
-         <div class="form-group">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" placeholder="••••••••">
-        </div>
-         <a href="#" class="forgot-link" id="forgotLink">Forgot the password?</a>
-         <button class="submit-btn" id="submitBtn">➔ Log In</button>
-      </div>
+<div class="auth-card" id="loginForm">
+  <div class="card-title">Enter Your Account</div>
+<div class="tab-switcher">
+    <button type="button" class="tab-btn active" id="loginTab">Log In</button>
+    <button type="button" class="tab-btn" id="registerTab" onclick="showRegister()">Register</button>
+</div>
+  <form action="php/auth.php" method="POST">
+    <input type="hidden" name="login" value="1">
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" name="email" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" name="password" placeholder="••••••••">
+    </div>
+    <button class="submit-btn" type="submit">➔ Log In</button>
+  </form>
+</div>
+
+<div class="auth-card" id="registerForm" style="display: none;">
+  <div class="card-title">Create Your Account</div>
+<div class="tab-switcher">
+    <button type="button" class="tab-btn" id="loginTab2" onclick="showLogin()">Log In</button>
+    <button type="button" class="tab-btn active" id="registerTab2">Register</button>
+</div>
+  <form action="php/auth.php" method="POST">
+    <input type="hidden" name="register" value="1">
+    <div class="form-group">
+      <label class="form-label">Name</label>
+      <input class="form-input" type="text" name="name" placeholder="Your name">
+    </div>
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'email_exists'): ?>
+    <div class="error-msg">This email is already registered.</div>
+<?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'invalid_email'): ?>
+    <div class="error-msg">Invalid email.</div>
+<?php endif; ?>
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" name="email" placeholder="email@example.com">
+    </div>
+            <?php if (isset($_GET['error']) && $_GET['error'] == 'password_short'): ?>
+    <div class="error-msg">Password is too short. At least 8 char.</div>
+<?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'password_weak'): ?>
+    <div class="error-msg">Password must include a lowercase letter, an uppercase letter, and a number.</div>
+<?php endif; ?>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" name="password" placeholder="••••••••">
+    </div>
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'password_mismatch'): ?>
+    <div class="error-msg">Passwords do not match.</div>
+<?php endif; ?>
+    <div class="form-group">
+      <label class="form-label">Repeat Password</label>
+      <input class="form-input" type="password" name="repeat_password" placeholder="••••••••">
+    </div>
+    <button class="submit-btn" type="submit">➔ Register</button>
+  </form>
+</div>
     </div>
     <div class="books-bg">
         <img src="img/landing_bg.jpg" alt="">
@@ -89,5 +130,6 @@
 
 </div>
   
+  <script src="js/script.js"></script>
 </body>
 </html>
