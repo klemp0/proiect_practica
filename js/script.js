@@ -8,6 +8,54 @@ function showLogin() {
     document.getElementById('loginForm').style.display = 'block';
 }
 
+function togglePassword(inputId, icon) {
+    var input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "visibility_off";
+    } else {
+        input.type = "password";
+        icon.textContent = "visibility";
+    }
+}
+
+function toggleRegisterPasswords(icon) {
+    var password = document.getElementById("registerPassword");
+    var repeat = document.getElementById("repeatPassword");
+
+    if (password.type === "password") {
+        password.type = "text";
+        repeat.type = "text";
+        icon.textContent = "visibility_off";
+    } else {
+        password.type = "password";
+        repeat.type = "password";
+        icon.textContent = "visibility";
+    }
+}
+
+document.addEventListener("click", function(e) {
+
+    if (!e.target.closest(".password-box")) {
+
+        var login = document.getElementById("loginPassword");
+        if (login) {
+            login.type = "password";
+        }
+
+        var register = document.getElementById("registerPassword");
+        var repeat = document.getElementById("repeatPassword");
+
+        if (register) register.type = "password";
+        if (repeat) repeat.type = "password";
+
+        document.querySelectorAll(".password-icon").forEach(icon => {
+            icon.textContent = "visibility";
+        });
+    }
+});
+
 if (window.location.search.indexOf('form=register') !== -1) {
     showRegister();
     window.history.replaceState({}, document.title, '/proiect_practica/index.php');
