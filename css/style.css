@@ -409,3 +409,21 @@ footer {
     font-size: 13px;
     margin-bottom: 14px;
 }
+
+.password-box {
+  position: relative;
+}
+
+.password-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #8B6344;
+  font-size: 20px;
+}
+
+.password-box .form-input {
+  padding-right: 45px;
+}

@@ -34,7 +34,7 @@ if (isset($_SESSION["flash_email"])) {
        <span class="logo-title">My Library</span>
     </div>
 <div class="auth-card" id="loginForm">
-  <div class="card-title">Enter Your Account</div>
+  <div class="card-title">Enter your account</div>
 <div class="tab-switcher">
     <button type="button" class="tab-btn active" id="loginTab">Log In</button>
     <button type="button" class="tab-btn" id="registerTab" onclick="showRegister()">Register</button>
@@ -51,16 +51,24 @@ if (isset($_SESSION["flash_email"])) {
       <label class="form-label">E-mail</label>
       <input class="form-input" type="email" name="email" placeholder="email@example.com" value="<?php echo $flash_email; ?>">
     </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <input class="form-input" type="password" name="password" placeholder="••••••••">
-    </div>
+<div class="form-group">
+  <label class="form-label">Password</label>
+
+  <div class="password-box">
+    <input class="form-input" type="password" id="loginPassword" name="password" placeholder="••••••••">
+
+    <span class="material-symbols-outlined password-icon"
+          onclick="togglePassword('loginPassword', this)">
+      visibility
+    </span>
+  </div>
+</div>
     <button class="submit-btn" type="submit">Log In ➔</button>
   </form>
 </div>
 
 <div class="auth-card" id="registerForm" style="display: none;">
-  <div class="card-title">Create Your Account</div>
+  <div class="card-title">Create your account</div>
 <div class="tab-switcher">
     <button type="button" class="tab-btn" id="loginTab2" onclick="showLogin()">Log In</button>
     <button type="button" class="tab-btn active" id="registerTab2">Register</button>
@@ -78,14 +86,29 @@ if (isset($_SESSION["flash_email"])) {
       <label class="form-label">E-mail</label>
       <input class="form-input" type="email" name="email" placeholder="email@example.com">
     </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <input class="form-input" type="password" name="password" placeholder="••••••••">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Repeat Password</label>
-      <input class="form-input" type="password" name="repeat_password" placeholder="••••••••">
-    </div>
+<div class="form-group">
+  <label class="form-label">Password</label>
+
+  <div class="password-box">
+    <input class="form-input" type="password" id="registerPassword" name="password" placeholder="••••••••">
+
+<span class="material-symbols-outlined password-icon"
+      onclick="toggleRegisterPasswords(this)">
+    visibility
+</span>
+  </div>
+</div>
+<div class="form-group">
+  <label class="form-label">Repeat Password</label>
+
+  <div class="password-box">
+    <input class="form-input"
+           type="password"
+           id="repeatPassword"
+           name="repeat_password"
+           placeholder="••••••••">
+  </div>
+</div>
     <button class="submit-btn" type="submit">Register ➔</button>
   </form>
 </div>

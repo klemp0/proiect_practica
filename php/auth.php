@@ -4,6 +4,7 @@ $content = file_get_contents("../data/users.json");
 $users = json_decode($content, true);
 
 if (isset($_POST["register"])) {
+    $id = count($users) + 1;
     $name = $_POST["name"];
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -16,7 +17,13 @@ if (isset($_POST["register"])) {
         }
     }
 
-    $newUser = ["name" => $name, "email" => $email, "password" => $password];
+    $newUser = [
+    "id" => $id,
+    "name" => $name,
+    "email" => $email,
+    "password_hash" => password_hash($password, PASSWORD_BCRYPT)
+    ];
+
     $users[] = $newUser;
     $_SESSION["user_name"] = $name;
     $_SESSION["user_email"] = $email;
@@ -31,22 +38,23 @@ if (isset($_POST["login"])) {
 
     $emailFound = false;
 
-    foreach ($users as $user) {
-        if ($user["email"] == $email) {
-            $emailFound = true;
-            if ($user["password"] == $password) {
-                $_SESSION["user_name"] = $user["name"];
-                $_SESSION["user_email"] = $user["email"];
-                header("Location: /proiect_practica/page.php");
-                exit();
-            } else {
-                $_SESSION["flash_error"] = "login_error";
-                $_SESSION["flash_email"] = $email;
-                header("Location: /proiect_practica/index.php");
-                exit();
-            }
+foreach ($users as $user) {
+    if ($user["email"] == $email) {
+        $emailFound = true;
+
+        if (password_verify($password, $user["password_hash"])) {
+            $_SESSION["user_name"] = $user["name"];
+            $_SESSION["user_email"] = $user["email"];
+            header("Location: /proiect_practica/page.php");
+            exit();
+        } else {
+            $_SESSION["flash_error"] = "login_error";
+            $_SESSION["flash_email"] = $email;
+            header("Location: /proiect_practica/index.php");
+            exit();
         }
     }
+}
 
     if (!$emailFound) {
         $_SESSION["flash_error"] = "email_error";
