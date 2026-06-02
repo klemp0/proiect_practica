@@ -2,6 +2,11 @@ body {
   font-family: 'Lato', sans-serif;
   background-color: #fcf9f5;
   color: #3B2310;
+  user-select: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
  
 .top-bar {
@@ -220,20 +225,19 @@ footer {
 }
 
 .footer-wrap {
-  background: #FAF6F1;
-  border: 1px solid #DFC8A8;
-  border-radius: 16px;
-  padding: 32px 60px 16px;
-  width: 700px;
-  height: 400px;
+  background: #F6F1E9;
+  padding: 32px 150px 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .footer-main {
   display: flex;
   justify-content: space-between;
-  gap: 40px;
+  width: 800px;
   margin-bottom: 50px;
-  margin-top: 15px;
 }
 
 .footer-left {
@@ -251,7 +255,7 @@ footer {
 }
 
 .footer-logo-title {
-    font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 30px;
   font-weight: 500;
   color: #8B6344;
@@ -269,9 +273,10 @@ footer {
   max-width: 240px;
 }
  
-.footer-github-img {
+.footer-img {
   display: flex;
   width: 30px;
+  
 }
  
 .footer-github:hover {
@@ -288,10 +293,22 @@ footer {
 
 .footer-right {
   display: flex;
+  justify-content: right;
   flex-direction: column;
   gap: 10px;
-  min-width: 280px;
-  margin-top: 30px;
+  padding-top: 10px;
+}
+
+.social-img {
+  display: flex;
+  gap: 10px;
+}
+
+.socials {
+  font-family: 'Playfair Display', serif;   
+  font-size: 21px;
+  color: #8B6344;
+  font-weight: 530;
 }
  
 .feedback-title {
@@ -371,12 +388,17 @@ footer {
   border-top: 1px solid #DFC8A8;
   margin-bottom: 12px;
 }
+
+.footer-bottom {
+  width: 100%;
+}
  
 .footer-copy {
   text-align: center;
   font-size: 12px;
   color: #B8926A;
 }
+
 
 .error-msg {
     background: #FCEBEB;

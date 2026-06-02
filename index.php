@@ -55,7 +55,7 @@ if (isset($_SESSION["flash_email"])) {
       <label class="form-label">Password</label>
       <input class="form-input" type="password" name="password" placeholder="••••••••">
     </div>
-    <button class="submit-btn" type="submit">➔ Log In</button>
+    <button class="submit-btn" type="submit">Log In ➔</button>
   </form>
 </div>
 
@@ -86,7 +86,7 @@ if (isset($_SESSION["flash_email"])) {
       <label class="form-label">Repeat Password</label>
       <input class="form-input" type="password" name="repeat_password" placeholder="••••••••">
     </div>
-    <button class="submit-btn" type="submit">➔ Register</button>
+    <button class="submit-btn" type="submit">Register ➔</button>
   </form>
 </div>
     </div>
@@ -107,14 +107,11 @@ if (isset($_SESSION["flash_email"])) {
         <div class="footer-desc">
           O aplicație personală pentru organizarea colecției tale de cărți. Simplu, rapid și mereu la îndemână.
         </div>
-        <a href="https://github.com/klemp0/proiect_practica" target="_blank">
-          <img src="img/github.png" alt="" class="footer-github-img">
-        </a>
         <span class="footer-privacy">Privacy Policy</span>
       </div>
 
       <div class="footer-right">
-        <div class="feedback-title">Feedback</div>
+        <!-- <div class="feedback-title">Feedback</div>
         <div class="footer-field">
           <label class="footer-label">e-mail</label>
           <input class="footer-input" type="email" placeholder="email@example.com">
@@ -125,14 +122,22 @@ if (isset($_SESSION["flash_email"])) {
         </div>
         <button class="send-btn">
           <span class="material-symbols-outlined">send</span> Send
-        </button>
+        </button> -->
+        <div class="socials">Socials</div>
+        <div class="social-img">
+        <a href="https://github.com/klemp0/proiect_practica" target="_blank">
+          <img src="img/github.png" alt="" class="footer-img">
+        </a>
+        <a href=""><img src="img/instagram.png" alt="" class="footer-img"></a>
+        <a href=""><img src="img/telegram.png" alt="" class="footer-img"></a>
       </div>
 
     </div>
-      <div class="footer-bottom">
+
+  </div>      
+  <div class="footer-bottom">
     <hr class="footer-divider">
-    <div class="footer-copy">© 2026 Biblioteca Mea — All rights reserved</div>
-  </div>
+    <div class="footer-copy">© 2026 My Library — All rights reserved</div>
   </div>
 </footer>
 
