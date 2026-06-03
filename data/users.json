@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "name": "nikita",
+        "name": "Nikita",
         "email": "nikita@gmail.com",
-        "password_hash": "$2y$10$bWSvmhqgx8MzvS17AYLARuyyF4ttArE6hkZQlXEANpi5tBpgr\/r7G"
+        "password_hash": "$2y$10$f4LbVfjZBOKB8YdlrwDRa.XTMNhH0d23\/vHdmzgpRxTkroU7t1GCa"
     }
 ]
