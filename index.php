@@ -10,6 +10,10 @@ if (isset($_SESSION["flash_email"])) {
     $flash_email = $_SESSION["flash_email"];
     unset($_SESSION["flash_email"]);
 }
+if (isset($_SESSION["user_name"])) {
+    header("Location: /proiect_practica/page.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -128,7 +132,7 @@ if (isset($_SESSION["flash_email"])) {
           <span class="footer-logo-title">My Library</span>
         </div>
         <div class="footer-desc">
-          O aplicație personală pentru organizarea colecției tale de cărți. Simplu, rapid și mereu la îndemână.
+          A personal app for organizing your book collection. Simple, fast, and always at hand.
         </div>
         <span class="footer-privacy">Privacy Policy</span>
       </div>
