@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Harry Potter and the Philosopher's Stone",
+        "author": "J. K. Rowling",
+        "cover": "https:\/\/covers.openlibrary.org\/b\/id\/15155833-M.jpg",
+        "genres": [],
+        "rating": null,
+        "category": "Don't read",
+        "saved": false
+    },
+    {
+        "title": "Nineteen Eighty-Four",
+        "author": "George Orwell",
+        "cover": "https:\/\/covers.openlibrary.org\/b\/id\/9267242-M.jpg",
+        "genres": [],
+        "rating": null,
+        "category": "Don't read",
+        "saved": true
+    }
+]

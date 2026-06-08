@@ -173,31 +173,35 @@ body {
 
 .section {
   display: flex;
-  justify-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
   padding: 24px 32px;
   margin-top: 50px;
   gap: 20px;
-  width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .books-area {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 16px;
 }
 
 .add-btn {
-  width: 56px;
-  height: 56px;
+  width: 36px;
+  height: 36px;
   border: 1.5px solid #B8926A;
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: #B8926A;
   flex-shrink: 0;
-  background: transparent;  
+  background: transparent;
+  margin-left: 8px;
 }
 
 .add-btn:hover {
@@ -207,14 +211,13 @@ body {
 }
 
 .add-btn .material-symbols-outlined {
-  font-size: 28px;
+  font-size: 22px;
 }
 
 .books-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex: 1;
 }
 
 .book-modal{
@@ -279,13 +282,14 @@ body {
 .category-btn {
   font-family: 'Lato', sans-serif;
   font-size: 13px;
-  width: 85px;
-  display: flex;
+  width: fit-content;
+  display: inline-flex;
   align-items: center;
+  gap: 2px;
   background: #FAF6F1;
   border: 1px solid #DFC8A8;
   border-radius: 8px;
-  padding: 5px 14px;
+  padding: 5px 10px;
   cursor: pointer;
   color: #8B6344;
   position: relative;
@@ -300,4 +304,174 @@ body {
     display: flex;
     flex-direction: column;
     gap: 50px;
+}
+
+.section {
+  align-items: flex-start;
+}
+
+.book-modal {
+  height: auto;
+  min-height: 300px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  color: #8B6344;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.modal-content .form-group label {
+  font-size: 13px;
+  color: #8B6344;
+  margin-bottom: 4px;
+  display: block;
+}
+
+
+.book-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #FAF6F1;
+  border: 1px solid #DFC8A8;
+  border-radius: 12px;
+  padding: 12px 16px;
+  width: 480px;
+  box-sizing: border-box;
+}
+
+.book-cover {
+  width: 56px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+  border: 1px solid #DFC8A8;
+}
+
+.book-cover-placeholder {
+  width: 56px;
+  height: 80px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  border: 1px solid #DFC8A8;
+  background: #F0E6D6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #B8926A;
+}
+
+.book-cover-placeholder .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.book-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3B2310;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-author {
+  font-size: 13px;
+  color: #8B6344;
+}
+
+.book-genres {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.genre-tag {
+  font-size: 11px;
+  background: #F0E6D6;
+  border: 1px solid #DFC8A8;
+  border-radius: 20px;
+  padding: 2px 8px;
+  color: #8B6344;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-rating {
+  display: flex;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.star {
+  font-size: 16px;
+}
+
+.star-filled {
+  color: #C68B3A;
+}
+
+.star-empty {
+  color: #DFC8A8;
+}
+
+.book-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.category-select {
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  background: #FAF6F1;
+  border: 1px solid #DFC8A8;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #8B6344;
+  cursor: pointer;
+  outline: none;
+}
+
+.category-select:hover {
+  background: #F0E6D6;
+}
+
+.bookmark-btn {
+  font-size: 20px;
+  color: #B8926A;
+  cursor: pointer;
+}
+
+.bookmark-btn:hover {
+  color: #5C3D22;
+}
+
+.delete-btn {
+  font-size: 20px;
+  color: #D9A0A0;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: #A32D2D;
 }
