@@ -323,3 +323,45 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+function openEditModal() {
+    document.getElementById('navDropdown').style.display = 'none';
+    document.getElementById('editOverlay').style.display = 'block';
+    document.getElementById('editModal').style.display = 'flex';
+    document.getElementById('editError').style.display = 'none';
+    document.getElementById('editName').value = '';
+    document.getElementById('editPassword').value = '';
+}
+
+function closeEditModal() {
+    document.getElementById('editOverlay').style.display = 'none';
+    document.getElementById('editModal').style.display = 'none';
+}
+
+async function submitEdit() {
+    var name = document.getElementById('editName').value.trim();
+    var password = document.getElementById('editPassword').value;
+    var errorDiv = document.getElementById('editError');
+
+    if (!name || !password) {
+        errorDiv.textContent = 'Please fill in all fields.';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    var response = await fetch('php/edit_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, password: password })
+    });
+
+    var result = await response.json();
+
+    if (result.success) {
+        document.querySelector('.nav-username').textContent = name;
+        closeEditModal();
+    } else {
+        errorDiv.textContent = result.error;
+        errorDiv.style.display = 'block';
+    }
+}

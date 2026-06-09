@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Fara cache - raspunsul sa fie mereu proaspat
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Content-Type: application/json');
 
@@ -11,8 +10,6 @@ if (!isset($_SESSION["user_email"])) {
 }
 
 $userFile = "../data/books_" . preg_replace('/[^a-zA-Z0-9]/', '_', $_SESSION["user_email"]) . ".json";
-
-// ==================== GET ====================
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     if (file_exists($userFile)) {
@@ -24,8 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     exit();
 }
 
-// ==================== POST ====================
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -34,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $books = json_decode(file_get_contents($userFile), true);
     }
 
-    // Adauga carte noua
     if (!isset($data["action"])) {
         $books[] = [
             "title"    => $data["title"],
@@ -49,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    // Schimba categoria
     if ($data["action"] === "update_category") {
         if (isset($books[$data["index"]])) {
             $books[$data["index"]]["category"] = $data["category"];
@@ -59,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    // Toggle bookmark
     if ($data["action"] === "toggle_saved") {
         if (isset($books[$data["index"]])) {
             $books[$data["index"]]["saved"] = !$books[$data["index"]]["saved"];
@@ -69,7 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    // Sterge carte
     if ($data["action"] === "delete") {
         if (isset($books[$data["index"]])) {
             array_splice($books, $data["index"], 1);

@@ -35,7 +35,7 @@ if (!isset($_SESSION["user_name"])) {
       <span class="material-symbols-outlined">account_circle</span>
       <span class="nav-username"><?php echo $_SESSION["user_name"]; ?></span>
       <div class="nav-dropdown" id="navDropdown" style="display:none;">
-        <a href="#" class="dropdown-item">
+        <a href="#" class="dropdown-item" onclick="openEditModal(); return false;">
           <span class="material-symbols-outlined">edit</span> Edit
         </a>
         <a href="php/logout.php" class="dropdown-item">
@@ -106,6 +106,7 @@ if (!isset($_SESSION["user_name"])) {
 <div id="myBooks" class="section-wrap" style="display:none;">
   <h2 style="font-family:'Playfair Display',serif; color:#8B6344; font-weight:400;">My Books</h2>
 </div>
+
   <footer>
   <div class="footer-wrap">
     <div class="footer-main">
@@ -155,6 +156,25 @@ if (!isset($_SESSION["user_name"])) {
     <div class="footer-copy">© 2026 My Library — All rights reserved</div>
   </div>
 </footer>
+
+
+<div class="edit-overlay" id="editOverlay" onclick="closeEditModal()"></div>
+<div class="edit-modal" id="editModal">
+  <div class="modal-header">
+    <span class="material-symbols-outlined" style="font-size:20px; color:#8B6344;">edit</span>
+    <span class="modal-title">Edit Profile</span>
+  </div>
+  <div class="form-group">
+    <label>New Name</label>
+    <input class="form-input" type="text" id="editName" placeholder="<?php echo $_SESSION['user_name']; ?>">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input class="form-input" type="password" id="editPassword" placeholder="••••••••">
+  </div>
+  <div id="editError" class="error-msg" style="display:none;"></div>
+  <button class="submit-btn" style="margin-top:8px; width:100%; justify-content:center;" onclick="submitEdit()">Save</button>
+</div>
 
 <script src="js/pscript.js"></script>
 </body>
