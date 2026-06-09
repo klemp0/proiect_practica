@@ -138,18 +138,6 @@ if (isset($_SESSION["user_name"])) {
       </div>
 
       <div class="footer-right">
-        <!-- <div class="feedback-title">Feedback</div>
-        <div class="footer-field">
-          <label class="footer-label">e-mail</label>
-          <input class="footer-input" type="email" placeholder="email@example.com">
-        </div>
-        <div class="footer-field">
-          <label class="footer-label">message</label>
-          <textarea class="footer-textarea" placeholder="Write your message here..."></textarea>
-        </div>
-        <button class="send-btn">
-          <span class="material-symbols-outlined">send</span> Send
-        </button> -->
         <div class="socials">Socials</div>
         <div class="social-img">
         <a href="https://github.com/klemp0/proiect_practica" target="_blank">

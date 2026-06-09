@@ -636,3 +636,29 @@ body {
 .password-box .form-input {
   padding-right: 45px;
 }
+
+.edit-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(59, 35, 16, 0.35);
+  z-index: 200;
+}
+
+.edit-modal {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background: #FAF6F1;
+  border: 1px solid #DFC8A8;
+  border-radius: 14px;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(91,61,34,0.08);
+  z-index: 201;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+}
