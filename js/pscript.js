@@ -81,9 +81,34 @@ function selectCardCategory(event, index, category) {
     changeCategory(index, category);
 }
 
+var knownGenres = [
+    'literary fiction', 'historical fiction', 'science fiction', 'dark fantasy', 
+    'epic fantasy', 'urban fantasy', 'psychological thriller', 'paranormal romance', 
+    'magical realism', 'young adult', 'coming of age', 'graphic novel', 'short stories', 
+    'non-fiction', 'true crime', 'popular science', 'personal development',
+    'fantasy', 'mystery', 'thriller', 'crime', 'detective', 'horror', 
+    'gothic', 'romance', 'adventure', 'dystopian', 'utopian', 'satire', 'humor', 
+    'comedy', 'drama', 'tragedy', 'western', 'spy', 'suspense', 'action', 'war', 
+    'political', 'legal', 'medical', 'techno', 'mythology', 'folklore', 'fairy tale', 
+    'manga', 'anthology', 'novella', 'classic', 'paranormal', 'supernatural', 
+    'occult', 'cyberpunk', 'steampunk', 'biography', 'autobiography', 'memoir', 
+    'history', 'journalism', 'essay', 'philosophy', 'psychology', 'self-help', 
+    'science', 'mathematics', 'physics', 'politics', 'economics', 'sociology', 
+    'anthropology', 'religion', 'spirituality', 'theology', 'travel', 'nature', 
+    'environment', 'art', 'music', 'film', 'architecture', 'cooking', 'health', 
+    'fitness', 'medicine', 'business', 'finance', 'technology', 'education',
+    'fiction'
+];
+
+var blacklist = [
+    'in english', 'in french', 'in german', 'in spanish',
+    'british and irish', 'american fiction', 'english fiction',
+    'imaginary', 'place)', '(fic', 'translations'
+];
+
 async function searchBook(title, author) {
     var query = encodeURIComponent(title + ' ' + author);
-    var url = 'https://openlibrary.org/search.json?q=' + query + '&limit=1';
+    var url = 'https://openlibrary.org/search.json?q=' + query + '&limit=1&fields=title,author_name,cover_i,subject,subject_facet';
 
     try {
         var controller = new AbortController();
@@ -96,13 +121,31 @@ async function searchBook(title, author) {
 
         var book = data.docs[0];
         var coverUrl = book.cover_i ? 'https://covers.openlibrary.org/b/id/' + book.cover_i + '-M.jpg' : null;
-        var genres = book.subject ? book.subject.slice(0, 3) : [];
+
+        var rawSubjects = book.subject || [];
+        var genresSet = new Set();
+
+        for (var i = 0; i < rawSubjects.length; i++) {
+            var sub = rawSubjects[i].toLowerCase();
+            
+            var isBlacklisted = blacklist.some(function(b) { return sub.indexOf(b) !== -1; });
+            if (isBlacklisted) continue;
+
+            for (var j = 0; j < knownGenres.length; j++) {
+                var genre = knownGenres[j];
+                if (sub === genre || sub.indexOf(genre) !== -1) {
+                    genresSet.add(genre.charAt(0).toUpperCase() + genre.slice(1));
+                    break;
+                }
+            }
+            if (genresSet.size >= 3) break;
+        }
 
         return {
             title: book.title || title,
             author: book.author_name ? book.author_name[0] : author,
             cover: coverUrl,
-            genres: genres
+            genres: Array.from(genresSet)
         };
     } catch (err) {
         return null;
@@ -189,7 +232,7 @@ function createBookCard(book, index) {
 
     var genresHtml = '';
     if (book.genres && book.genres.length > 0) {
-        book.genres.slice(0, 2).forEach(function(g) {
+        book.genres.slice(0, 3).forEach(function(g) {
             genresHtml += '<span class="genre-tag">' + g + '</span>';
         });
     }

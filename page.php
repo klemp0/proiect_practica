@@ -46,6 +46,7 @@ if (!isset($_SESSION["user_name"])) {
   </div>
 </nav>
 
+
 <div id="addBooks" class="section-wrap">
 
   <div class="main-row">
@@ -105,6 +106,55 @@ if (!isset($_SESSION["user_name"])) {
 <div id="myBooks" class="section-wrap" style="display:none;">
   <h2 style="font-family:'Playfair Display',serif; color:#8B6344; font-weight:400;">My Books</h2>
 </div>
+  <footer>
+  <div class="footer-wrap">
+    <div class="footer-main">
+
+      <div class="footer-left">
+        <div class="footer-logo">
+          <img src="img/books.png" alt="" class="footer-logo-img">
+          <span class="footer-logo-title">My Library</span>
+        </div>
+        <div class="footer-desc">
+          A personal app for organizing your book collection. Simple, fast, and always at hand.
+          <br><span class="footer-privacy">Privacy Policy</span>
+        </div>
+        
+        <div class="contact">
+        <div class="socials">Socials</div>
+        <div class="social-img">
+        <a href="https://github.com/klemp0/proiect_practica" target="_blank">
+          <img src="img/github.png" alt="" class="footer-img">
+        </a>
+        <a href=""><img src="img/instagram.png" alt="" class="footer-img"></a>
+        <a href=""><img src="img/telegram.png" alt="" class="footer-img"></a>
+      </div>
+      </div>
+      </div>
+
+      <div class="footer-right">
+<div class="feedback-title">Feedback</div>
+        <div class="footer-field">
+          <label class="footer-label">e-mail</label>
+          <input class="footer-input" type="email" placeholder="email@example.com">
+        </div>
+        <div class="footer-field">
+          <label class="footer-label">message</label>
+          <textarea class="footer-textarea" placeholder="Write your message here..."></textarea>
+        </div>
+        <button class="send-btn">
+          <span class="material-symbols-outlined">send</span> Send
+        </button>
+
+
+    </div>
+
+  </div>      
+  <div class="footer-bottom">
+    <hr class="footer-divider">
+    <div class="footer-copy">© 2026 My Library — All rights reserved</div>
+  </div>
+</footer>
 
 <script src="js/pscript.js"></script>
 </body>
