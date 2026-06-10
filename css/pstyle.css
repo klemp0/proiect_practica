@@ -247,6 +247,7 @@ body {
   padding: 7px 10px;
   cursor: pointer;
   color: #8B6344;
+  height: fit-content;
 }
 
 .category-btn:hover { background: #F0E6D6; }
@@ -313,7 +314,7 @@ body {
 
 .book-card {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 18px;
   background: #FAF6F1;
   border: 1px solid #DFC8A8;
@@ -351,8 +352,22 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
   min-width: 0;
+}
+
+.book-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.book-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
 }
 
 .book-title {
@@ -389,24 +404,21 @@ body {
   text-overflow: ellipsis;
 }
 
-.book-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
 .bookmark-btn {
-  font-size: 22px;
+  font-size: 28px;
   color: #B8926A;
   cursor: pointer;
+  transition: color 0.2s;
 }
 
-.bookmark-btn:hover { color: #5C3D22; }
+.bookmark-btn.saved {
+  color: #ffd000;
+}
+
+.bookmark-btn:hover { color: #ffd000; }
 
 .delete-btn {
-  font-size: 22px;
+  font-size: 26px;
   color: #D9A0A0;
   cursor: pointer;
 }

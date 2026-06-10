@@ -1,3 +1,5 @@
+var allBooks = [];
+
 function moveIndicator(btn) {
     var indicator = document.getElementById('navIndicator');
     indicator.style.left = btn.offsetLeft + 'px';
@@ -11,7 +13,7 @@ function showSection(section) {
     document.getElementById('btnMyBooks').classList.remove('active');
 
     if (section === 'addBooks') {
-        document.getElementById('addBooks').style.display = 'block';
+        document.getElementById('addBooks').style.display = 'flex';
         var btn = document.getElementById('btnAddBooks');
         btn.classList.add('active');
         moveIndicator(btn);
@@ -20,12 +22,27 @@ function showSection(section) {
         var btn = document.getElementById('btnMyBooks');
         btn.classList.add('active');
         moveIndicator(btn);
+
+        document.querySelectorAll('.mybooks-tab').forEach(function(t) {
+            t.classList.remove('active');
+        });
+        var allTab = document.querySelector('.mybooks-tab[data-filter="all"]');
+        allTab.classList.add('active');
+        renderMyBooks(allBooks, 'all');
+
+        setTimeout(function() {
+            moveMybooksIndicator(allTab);
+        }, 10);
     }
 }
 
-window.onload = function() {
-    moveIndicator(document.getElementById('btnAddBooks'));
-    loadBooks();
+function moveMybooksIndicator(btn) {
+    var indicator = document.getElementById('mybooksIndicator');
+    var tabs = document.querySelector('.mybooks-tabs');
+    var tabsRect = tabs.getBoundingClientRect();
+    var btnRect = btn.getBoundingClientRect();
+    indicator.style.left = (btnRect.left - tabsRect.left) + 'px';
+    indicator.style.width = btnRect.width + 'px';
 }
 
 function toggleDropdown() {
@@ -82,20 +99,20 @@ function selectCardCategory(event, index, category) {
 }
 
 var knownGenres = [
-    'literary fiction', 'historical fiction', 'science fiction', 'dark fantasy', 
-    'epic fantasy', 'urban fantasy', 'psychological thriller', 'paranormal romance', 
-    'magical realism', 'young adult', 'coming of age', 'graphic novel', 'short stories', 
+    'literary fiction', 'historical fiction', 'science fiction', 'dark fantasy',
+    'epic fantasy', 'urban fantasy', 'psychological thriller', 'paranormal romance',
+    'magical realism', 'young adult', 'coming of age', 'graphic novel', 'short stories',
     'non-fiction', 'true crime', 'popular science', 'personal development',
-    'fantasy', 'mystery', 'thriller', 'crime', 'detective', 'horror', 
-    'gothic', 'romance', 'adventure', 'dystopian', 'utopian', 'satire', 'humor', 
-    'comedy', 'drama', 'tragedy', 'western', 'spy', 'suspense', 'action', 'war', 
-    'political', 'legal', 'medical', 'techno', 'mythology', 'folklore', 'fairy tale', 
-    'manga', 'anthology', 'novella', 'classic', 'paranormal', 'supernatural', 
-    'occult', 'cyberpunk', 'steampunk', 'biography', 'autobiography', 'memoir', 
-    'history', 'journalism', 'essay', 'philosophy', 'psychology', 'self-help', 
-    'science', 'mathematics', 'physics', 'politics', 'economics', 'sociology', 
-    'anthropology', 'religion', 'spirituality', 'theology', 'travel', 'nature', 
-    'environment', 'art', 'music', 'film', 'architecture', 'cooking', 'health', 
+    'fantasy', 'mystery', 'thriller', 'crime', 'detective', 'horror',
+    'gothic', 'romance', 'adventure', 'dystopian', 'utopian', 'satire', 'humor',
+    'comedy', 'drama', 'tragedy', 'western', 'spy', 'suspense', 'action', 'war',
+    'political', 'legal', 'medical', 'techno', 'mythology', 'folklore', 'fairy tale',
+    'manga', 'anthology', 'novella', 'classic', 'paranormal', 'supernatural',
+    'occult', 'cyberpunk', 'steampunk', 'biography', 'autobiography', 'memoir',
+    'history', 'journalism', 'essay', 'philosophy', 'psychology', 'self-help',
+    'science', 'mathematics', 'physics', 'politics', 'economics', 'sociology',
+    'anthropology', 'religion', 'spirituality', 'theology', 'travel', 'nature',
+    'environment', 'art', 'music', 'film', 'architecture', 'cooking', 'health',
     'fitness', 'medicine', 'business', 'finance', 'technology', 'education',
     'fiction'
 ];
@@ -127,7 +144,6 @@ async function searchBook(title, author) {
 
         for (var i = 0; i < rawSubjects.length; i++) {
             var sub = rawSubjects[i].toLowerCase();
-            
             var isBlacklisted = blacklist.some(function(b) { return sub.indexOf(b) !== -1; });
             if (isBlacklisted) continue;
 
@@ -199,74 +215,12 @@ async function saveBook(bookData) {
 
 async function loadBooks() {
     var response = await fetch('php/save_data.php?action=get&t=' + Date.now());
-    var books = await response.json();
-    renderBooks(books);
-}
+    allBooks = await response.json();
+    renderBooks(allBooks);
 
-function renderBooks(books) {
-    var list = document.getElementById('booksList');
-    list.innerHTML = '';
-
-    if (books.length === 0) {
-        list.innerHTML = `
-            <div class="empty-msg">
-                <div class="empty-msg-title">No books added</div>
-                <div class="empty-msg-sub">Click add button to add a book</div>
-            </div>
-        `;
-        return;
-    }
-
-    books.forEach(function(book, index) {
-        list.appendChild(createBookCard(book, index));
-    });
-}
-
-function createBookCard(book, index) {
-    var card = document.createElement('div');
-    card.className = 'book-card';
-
-    var coverHtml = book.cover
-        ? '<img src="' + book.cover + '" alt="cover" class="book-cover">'
-        : '<div class="book-cover-placeholder"><span class="material-symbols-outlined">menu_book</span></div>';
-
-    var genresHtml = '';
-    if (book.genres && book.genres.length > 0) {
-        book.genres.slice(0, 3).forEach(function(g) {
-            genresHtml += '<span class="genre-tag">' + g + '</span>';
-        });
-    }
-
-    var bookmarkIcon = book.saved ? 'bookmark' : 'bookmark_border';
-
-    var categories = ["Don't read", "Reading", "Want to read", "Finished", "On hold"];
-    var optionsHtml = categories.map(function(cat) {
-        return '<a href="#" class="dropdown-item" onclick="selectCardCategory(event, ' + index + ', \'' + cat + '\')">' + cat + '</a>';
-    }).join('');
-
-    card.innerHTML = `
-        ${coverHtml}
-        <div class="book-info">
-            <div class="book-title">${book.title}</div>
-            <div class="book-author">${book.author}</div>
-            <div class="book-genres">${genresHtml}</div>
-        </div>
-        <div class="book-actions">
-            <div style="position:relative;">
-                <button type="button" class="category-btn" onclick="toggleCardCatDropdown(event, ${index})">
-                    <span>${book.category}</span>
-                    <span class="material-symbols-outlined" style="font-size:18px;">arrow_drop_down</span>
-                </button>
-                <div class="cat-dropdown" id="cardCatDropdown-${index}" style="display:none; left:auto; right:0;">
-                    ${optionsHtml}
-                </div>
-            </div>
-            <span class="material-symbols-outlined bookmark-btn" onclick="toggleSaved(${index})">${bookmarkIcon}</span>
-            <span class="material-symbols-outlined delete-btn" onclick="deleteBook(${index})">delete</span>
-        </div>
-    `;
-
-    return card;
+    var activeTab = document.querySelector('.mybooks-tab.active');
+    var filter = activeTab ? activeTab.getAttribute('data-filter') : 'all';
+    renderMyBooks(allBooks, filter);
 }
 
 async function changeCategory(index, newCategory) {
@@ -296,33 +250,113 @@ async function deleteBook(index) {
     loadBooks();
 }
 
-document.addEventListener('click', function(e) {
-    var account = document.getElementById('navAccount');
-    if (account && !account.contains(e.target)) {
-        document.getElementById('navDropdown').style.display = 'none';
+
+function renderBooks(books) {
+    var list = document.getElementById('booksList');
+    list.innerHTML = '';
+
+    if (books.length === 0) {
+        list.innerHTML = `
+            <div class="empty-msg">
+                <div class="empty-msg-title">No books added</div>
+                <div class="empty-msg-sub">Click add button to add a book</div>
+            </div>
+        `;
+        return;
     }
 
-    var catBtn = document.getElementById('categoryBtn');
-    if (catBtn && !catBtn.contains(e.target)) {
-        var catDrop = document.getElementById('catDropdown');
-        if (catDrop) catDrop.style.display = 'none';
-    }
+    books.forEach(function(book, index) {
+        list.appendChild(createBookCard(book, index));
+    });
+}
 
-    document.querySelectorAll('.cat-dropdown[id^="cardCatDropdown-"]').forEach(function(d) {
-        var btn = d.previousElementSibling;
-        if (!d.contains(e.target) && btn && !btn.contains(e.target)) {
-            d.style.display = 'none';
-        }
+function renderMyBooks(books, filter) {
+    var list = document.getElementById('myBooksList');
+    list.innerHTML = '';
+
+    var filtered = books.filter(function(book) {
+        if (filter === 'all') return book.category !== "Don't read" || book.saved;
+        if (filter === 'saved') return book.saved == true;
+        return book.category === filter;
     });
 
-    var modal = document.getElementById('addModal');
-    var addBtn = document.getElementById('addBtn');
-    if (modal && modal.style.display !== 'none') {
-        if (!modal.contains(e.target) && !addBtn.contains(e.target)) {
-            closeModal();
-        }
+    if (filtered.length === 0) {
+        list.innerHTML = `
+            <div class="empty-msg">
+                <div class="empty-msg-title">No books here</div>
+                <div class="empty-msg-sub">Add books or change their category</div>
+            </div>
+        `;
+        return;
     }
-});
+
+    filtered.forEach(function(book) {
+        var index = books.indexOf(book);
+        list.appendChild(createBookCard(book, index));
+    });
+}
+
+function createBookCard(book, index) {
+    var card = document.createElement('div');
+    card.className = 'book-card';
+
+    var coverHtml = book.cover
+        ? '<img src="' + book.cover + '" alt="cover" class="book-cover">'
+        : '<div class="book-cover-placeholder"><span class="material-symbols-outlined">menu_book</span></div>';
+
+    var genresHtml = '';
+    if (book.genres && book.genres.length > 0) {
+        book.genres.slice(0, 3).forEach(function(g) {
+            genresHtml += '<span class="genre-tag">' + g + '</span>';
+        });
+    }
+
+    var bookmarkIcon = book.saved ? 'bookmark' : 'bookmark_border';
+    var bookmarkClass = book.saved ? 'bookmark-btn saved' : 'bookmark-btn';
+
+    var categories = ["Don't read", "Reading", "Want to read", "Finished", "On hold"];
+    var optionsHtml = categories.map(function(cat) {
+        return '<a href="#" class="dropdown-item" onclick="selectCardCategory(event, ' + index + ', \'' + cat + '\')">' + cat + '</a>';
+    }).join('');
+
+    card.innerHTML = `
+        ${coverHtml}
+        <div class="book-info">
+            <div class="book-top">
+                <div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">${book.author}</div>
+                    <div class="book-genres">${genresHtml}</div>
+                </div>
+                <span class="material-symbols-outlined delete-btn" onclick="deleteBook(${index})">delete</span>
+            </div>
+            <div class="book-bottom">
+                <div style="position:relative;">
+                    <button type="button" class="category-btn" onclick="toggleCardCatDropdown(event, ${index})">
+                        <span>${book.category}</span>
+                        <span class="material-symbols-outlined" style="font-size:18px;">arrow_drop_down</span>
+                    </button>
+                    <div class="cat-dropdown" id="cardCatDropdown-${index}" style="display:none; left:auto; right:0;">
+                        ${optionsHtml}
+                    </div>
+                </div>
+                <span class="material-symbols-outlined ${bookmarkClass}" onclick="toggleSaved(${index})">${bookmarkIcon}</span>
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+
+function filterBooks(filter, btn) {
+    document.querySelectorAll('.mybooks-tab').forEach(function(t) {
+        t.classList.remove('active');
+    });
+    btn.classList.add('active');
+    moveMybooksIndicator(btn);
+    renderMyBooks(allBooks, filter);
+}
 
 function openEditModal() {
     document.getElementById('navDropdown').style.display = 'none';
@@ -365,3 +399,38 @@ async function submitEdit() {
         errorDiv.style.display = 'block';
     }
 }
+
+document.addEventListener('click', function(e) {
+    var account = document.getElementById('navAccount');
+    if (account && !account.contains(e.target)) {
+        document.getElementById('navDropdown').style.display = 'none';
+    }
+
+    var catBtn = document.getElementById('categoryBtn');
+    if (catBtn && !catBtn.contains(e.target)) {
+        var catDrop = document.getElementById('catDropdown');
+        if (catDrop) catDrop.style.display = 'none';
+    }
+
+    document.querySelectorAll('.cat-dropdown[id^="cardCatDropdown-"]').forEach(function(d) {
+        var btn = d.previousElementSibling;
+        if (!d.contains(e.target) && btn && !btn.contains(e.target)) {
+            d.style.display = 'none';
+        }
+    });
+
+    var modal = document.getElementById('addModal');
+    var addBtn = document.getElementById('addBtn');
+    if (modal && modal.style.display !== 'none') {
+        if (!modal.contains(e.target) && !addBtn.contains(e.target)) {
+            closeModal();
+        }
+    }
+});
+
+window.onload = function() {
+    moveIndicator(document.getElementById('btnAddBooks'));
+    loadBooks().then(function() {
+        moveMybooksIndicator(document.querySelector('.mybooks-tab.active'));
+    });
+};

@@ -1,0 +1,55 @@
+.mybooks-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 48px 60px;
+}
+
+.mybooks-tabs {
+  display: flex;
+  gap: 0px;
+  position: relative;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+}
+
+.mybooks-tab {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  color: #8B6344;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 16px;
+  font-weight: 400;
+  min-width: 100px;
+  text-align: center;
+}
+
+.mybooks-tab:hover { font-weight: 550; }
+.mybooks-tab.active { font-weight: 600; }
+
+.mybooks-indicator-wrap {
+  position: relative;
+  height: 2px;
+  background: #DFC8A8;
+  border-radius: 2px;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+
+.mybooks-indicator {
+  position: absolute;
+  height: 2px;
+  background: #8B6344;
+  border-radius: 2px;
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+.bookmark-btn.saved {
+  font-variation-settings: 'FILL' 1;
+  color: #ffd000;
+}
