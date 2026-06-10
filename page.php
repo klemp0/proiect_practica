@@ -11,8 +11,9 @@ if (!isset($_SESSION["user_name"])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0">
   <link rel="stylesheet" href="css/pstyle.css">
+  <link rel="stylesheet" href="css/p2style.css">
 </head>
 <body>
 
@@ -103,8 +104,21 @@ if (!isset($_SESSION["user_name"])) {
   </div>
 </div>
 
-<div id="myBooks" class="section-wrap" style="display:none;">
-  <h2 style="font-family:'Playfair Display',serif; color:#8B6344; font-weight:400;">My Books</h2>
+<div id="myBooks" style="display:none;">
+  <div class="mybooks-wrap">
+    <div class="mybooks-tabs">
+    <button class="mybooks-tab active" data-filter="all" onclick="filterBooks('all', this)">All books</button>
+    <button class="mybooks-tab" data-filter="saved" onclick="filterBooks('saved', this)">Saved</button>
+    <button class="mybooks-tab" data-filter="Reading" onclick="filterBooks('Reading', this)">Reading</button>
+    <button class="mybooks-tab" data-filter="Want to read" onclick="filterBooks('Want to read', this)">Want to read</button>
+    <button class="mybooks-tab" data-filter="Finished" onclick="filterBooks('Finished', this)">Finished</button>
+    <button class="mybooks-tab" data-filter="On hold" onclick="filterBooks('On hold', this)">On hold</button>
+    </div>
+    <div class="mybooks-indicator-wrap">
+      <div class="mybooks-indicator" id="mybooksIndicator"></div>
+    </div>
+      <div class="books-list" id="myBooksList"></div>
+  </div>
 </div>
 
   <footer>
