@@ -1,5 +1,27 @@
 var allBooks = [];
 
+function applyTheme(theme) {
+    if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+    }
+    var icon = document.querySelector('.nav-btn .material-symbols-outlined[data-theme-icon]');
+    if (icon) icon.textContent = (theme === 'dark') ? 'light_mode' : 'dark_mode';
+}
+
+function toggleTheme() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var newTheme = isDark ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('theme') || 'light';
+    applyTheme(saved);
+});
+
 function moveIndicator(btn) {
     var indicator = document.getElementById('navIndicator');
     indicator.style.left = btn.offsetLeft + 'px';
