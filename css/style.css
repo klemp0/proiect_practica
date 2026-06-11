@@ -520,3 +520,95 @@ footer {
 .password-box .form-input {
   padding-right: 45px;
 }
+
+@media (max-width: 900px) {
+  .auth-card {
+    width: 340px;
+    padding: 28px 28px;
+  }
+
+  .footer-wrap {
+    padding: 32px 40px 16px;
+  }
+
+  .footer-main {
+    width: 100%;
+    flex-direction: column;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  .footer-right {
+    width: 100%;
+  }
+
+  .footer-input,
+  .footer-textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-bar {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .page-wrap {
+    margin-top: 60px;
+  }
+
+  .hero {
+    padding-top: 30px;
+    align-items: center;
+  }
+
+  .logo-title {
+    font-size: 32px;
+  }
+
+  .logo-img {
+    width: 32px;
+  }
+
+  .auth-card {
+    position: relative;
+    top: auto;
+    width: calc(100vw - 32px);
+    max-width: 400px;
+    padding: 24px 20px;
+    margin: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .books-bg {
+    margin-top: 32px;
+  }
+
+  [data-theme="dark"] .books-bg {
+    margin-top: 32px;
+  }
+
+  .footer-wrap {
+    padding: 24px 16px 16px;
+  }
+
+  .footer-main {
+    width: 100%;
+    gap: 24px;
+  }
+
+  .footer-logo-title {
+    font-size: 22px;
+  }
+
+  .footer-desc {
+    max-width: 100%;
+  }
+
+  .send-btn {
+    align-self: stretch;
+    justify-content: center;
+  }
+}
