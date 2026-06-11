@@ -18,7 +18,7 @@
 .mybooks-tab {
   font-family: 'Lato', sans-serif;
   font-size: 14px;
-  color: #8B6344;
+  color: var(--text-accent);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -34,7 +34,7 @@
 .mybooks-indicator-wrap {
   position: relative;
   height: 2px;
-  background: #DFC8A8;
+  background: var(--border-color);
   border-radius: 2px;
   width: 100%;
   max-width: 700px;
@@ -44,7 +44,7 @@
 .mybooks-indicator {
   position: absolute;
   height: 2px;
-  background: #8B6344;
+  background: var(--text-accent);
   border-radius: 2px;
   transition: left 0.3s ease, width 0.3s ease;
 }

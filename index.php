@@ -21,6 +21,12 @@ if (isset($_SESSION["user_name"])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -28,7 +34,7 @@ if (isset($_SESSION["user_name"])) {
 
 <div class="top-bar">
   <button class="lang-btn">EN <span class="material-symbols-outlined">language</span></button>
-  <button class="theme-btn"><span class="material-symbols-outlined">dark_mode</span></button>
+  <button class="theme-btn" onclick="toggleTheme()"><span class="material-symbols-outlined">dark_mode</span></button>
 </div>
 
 <div class="page-wrap">
@@ -118,8 +124,8 @@ if (isset($_SESSION["user_name"])) {
 </div>
     </div>
     <div class="books-bg">
-        <img src="img/landing_bg.jpg" alt="">
-      </div>
+        <img src="img/landing_bg.jpg" alt="" id="landingBg">
+    </div>
   </div>
 
   <footer>

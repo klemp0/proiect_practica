@@ -12,7 +12,7 @@ if (isset($_POST["register"])) {
     foreach ($users as $user) {
         if ($user["email"] == $email) {
             $_SESSION["flash_error"] = "email_exists";
-            header("Location: /proiect_practica/index.php?form=register");
+            header("Location: /MyLibrary/index.php?form=register");
             exit();
         }
     }
@@ -28,7 +28,7 @@ if (isset($_POST["register"])) {
     $_SESSION["user_name"] = $name;
     $_SESSION["user_email"] = $email;
     file_put_contents("../data/users.json", json_encode($users, JSON_PRETTY_PRINT));
-    header("Location: /proiect_practica/page.php");
+    header("Location: /MyLibrary/page.php");
     exit();
 }
 
@@ -45,12 +45,12 @@ foreach ($users as $user) {
         if (password_verify($password, $user["password_hash"])) {
             $_SESSION["user_name"] = $user["name"];
             $_SESSION["user_email"] = $user["email"];
-            header("Location: /proiect_practica/page.php");
+            header("Location: /MyLibrary/page.php");
             exit();
         } else {
             $_SESSION["flash_error"] = "login_error";
             $_SESSION["flash_email"] = $email;
-            header("Location: /proiect_practica/index.php");
+            header("Location: /MyLibrary/index.php");
             exit();
         }
     }
@@ -59,7 +59,7 @@ foreach ($users as $user) {
     if (!$emailFound) {
         $_SESSION["flash_error"] = "email_error";
         $_SESSION["flash_email"] = $email;
-        header("Location: /proiect_practica/index.php");
+        header("Location: /MyLibrary/index.php");
         exit();
     }
 }
