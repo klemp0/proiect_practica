@@ -1,4 +1,18 @@
 var allBooks = [];
+var currentLang = {};
+
+var CATEGORY_KEYS = {
+    "Don't read": "cat_dont_read",
+    "Reading": "cat_reading",
+    "Want to read": "cat_want",
+    "Finished": "cat_finished",
+    "On hold": "cat_hold"
+};
+
+function categoryLabel(cat) {
+    var key = CATEGORY_KEYS[cat];
+    return (key && currentLang[key]) ? currentLang[key] : cat;
+}
 
 function applyTheme(theme) {
     if (theme === 'dark') {
@@ -17,9 +31,57 @@ function toggleTheme() {
     applyTheme(newTheme);
 }
 
+async function loadLang(lang) {
+    var response = await fetch('lang/lang.json?t=' + Date.now());
+    var data = await response.json();
+    currentLang = data[lang] || data['en'];
+
+    applyLang();
+
+    var label = document.getElementById('langLabel');
+    if (label) label.textContent = lang.toUpperCase();
+
+    var stateEl = document.getElementById('categoryState');
+    if (stateEl) {
+        var val = stateEl.getAttribute('data-cat-value') || "Don't read";
+        stateEl.textContent = categoryLabel(val);
+    }
+
+    renderBooks(allBooks);
+
+    var activeTab = document.querySelector('.mybooks-tab.active');
+    var filter = activeTab ? activeTab.getAttribute('data-filter') : 'all';
+    renderMyBooks(allBooks, filter);
+}
+
+function applyLang() {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (currentLang[key]) el.textContent = currentLang[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n-placeholder');
+        if (currentLang[key]) el.placeholder = currentLang[key];
+    });
+}
+
+function toggleLangDropdown() {
+    var dropdown = document.getElementById('langDropdown');
+    dropdown.style.display = (dropdown.style.display === 'none') ? 'block' : 'none';
+}
+
+function setLang(event, lang) {
+    event.preventDefault();
+    event.stopPropagation();
+    localStorage.setItem('lang', lang);
+    document.getElementById('langDropdown').style.display = 'none';
+    loadLang(lang);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    var saved = localStorage.getItem('theme') || 'light';
-    applyTheme(saved);
+    var savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+    loadLang(localStorage.getItem('lang') || 'en');
 });
 
 function moveIndicator(btn) {
@@ -101,22 +163,25 @@ function toggleCatDropdown(event) {
 
 function selectCategory(event, value) {
     event.preventDefault();
-    document.getElementById('categoryState').textContent = value;
+    var stateEl = document.getElementById('categoryState');
+    stateEl.textContent = categoryLabel(value);
+    stateEl.setAttribute('data-cat-value', value);
     document.getElementById('catDropdown').style.display = 'none';
 }
 
-function toggleCardCatDropdown(event, index) {
+function toggleCardCatDropdown(event, dropId) {
     event.stopPropagation();
-    document.querySelectorAll('.cat-dropdown[id^="cardCatDropdown-"]').forEach(function(d) {
-        if (d.id !== 'cardCatDropdown-' + index) d.style.display = 'none';
+    document.querySelectorAll('.cat-dropdown[id^="addCatDropdown-"], .cat-dropdown[id^="myCatDropdown-"]').forEach(function(d) {
+        if (d.id !== dropId) d.style.display = 'none';
     });
-    var dropdown = document.getElementById('cardCatDropdown-' + index);
-    dropdown.style.display = (dropdown.style.display === 'none') ? 'block' : 'none';
+    var dropdown = document.getElementById(dropId);
+    if (dropdown) dropdown.style.display = (dropdown.style.display === 'none') ? 'block' : 'none';
 }
 
-function selectCardCategory(event, index, category) {
+function selectCardCategory(event, dropId, index, category) {
     event.preventDefault();
-    document.getElementById('cardCatDropdown-' + index).style.display = 'none';
+    var dropdown = document.getElementById(dropId);
+    if (dropdown) dropdown.style.display = 'none';
     changeCategory(index, category);
 }
 
@@ -195,15 +260,16 @@ document.getElementById('addBookForm').addEventListener('submit', async function
 
     var title = document.getElementById('title').value.trim();
     var author = document.getElementById('author').value.trim();
-    var category = document.getElementById('categoryState').textContent;
+    var stateEl = document.getElementById('categoryState');
+    var category = stateEl.getAttribute('data-cat-value') || "Don't read";
 
     if (title === '' || author === '') {
-        alert('Please enter title and author.');
+        alert(currentLang.alert_fill_fields || 'Please enter title and author.');
         return;
     }
 
     var submitBtn = this.querySelector('.submit-btn');
-    submitBtn.textContent = 'Adding...';
+    submitBtn.textContent = currentLang.adding || 'Adding...';
     submitBtn.disabled = true;
 
     var bookData = await searchBook(title, author);
@@ -218,8 +284,11 @@ document.getElementById('addBookForm').addEventListener('submit', async function
 
     document.getElementById('title').value = '';
     document.getElementById('author').value = '';
-    document.getElementById('categoryState').textContent = "Don't read";
-    submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;">add</span> Add';
+
+    stateEl.setAttribute('data-cat-value', "Don't read");
+    stateEl.textContent = categoryLabel("Don't read");
+
+    submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;">add</span> <span data-i18n="add_btn">' + (currentLang.add_btn || 'Add') + '</span>';
     submitBtn.disabled = false;
 
     closeModal();
@@ -272,23 +341,21 @@ async function deleteBook(index) {
     loadBooks();
 }
 
-
 function renderBooks(books) {
     var list = document.getElementById('booksList');
     list.innerHTML = '';
 
-    if (books.length === 0) {
-        list.innerHTML = `
-            <div class="empty-msg">
-                <div class="empty-msg-title">No books added</div>
-                <div class="empty-msg-sub">Click add button to add a book</div>
-            </div>
-        `;
+    if (!books || books.length === 0) {
+        list.innerHTML =
+            '<div class="empty-msg">' +
+                '<div class="empty-msg-title">' + (currentLang.no_books_title || 'No books added') + '</div>' +
+                '<div class="empty-msg-sub">' + (currentLang.no_books_sub || 'Click add button to add a book') + '</div>' +
+            '</div>';
         return;
     }
 
     books.forEach(function(book, index) {
-        list.appendChild(createBookCard(book, index));
+        list.appendChild(createBookCard(book, index, 'add'));
     });
 }
 
@@ -303,22 +370,25 @@ function renderMyBooks(books, filter) {
     });
 
     if (filtered.length === 0) {
-        list.innerHTML = `
-            <div class="empty-msg">
-                <div class="empty-msg-title">No books here</div>
-                <div class="empty-msg-sub">Add books or change their category</div>
-            </div>
-        `;
+        list.innerHTML =
+            '<div class="empty-msg">' +
+                '<div class="empty-msg-title">' + (currentLang.no_books_here_title || 'No books here') + '</div>' +
+                '<div class="empty-msg-sub">' + (currentLang.no_books_here_sub || 'Add books or change their category') + '</div>' +
+            '</div>';
         return;
     }
 
     filtered.forEach(function(book) {
-        var index = books.indexOf(book);
-        list.appendChild(createBookCard(book, index));
+        var index = allBooks.findIndex(function(b) {
+            return b.title === book.title && b.author === book.author;
+        });
+        list.appendChild(createBookCard(book, index, 'my'));
     });
 }
 
-function createBookCard(book, index) {
+function createBookCard(book, index, prefix) {
+    var dropId = (prefix || 'card') + 'CatDropdown-' + index;
+
     var card = document.createElement('div');
     card.className = 'book-card';
 
@@ -334,11 +404,10 @@ function createBookCard(book, index) {
     }
 
     var bookmarkIcon = book.saved ? 'bookmark' : 'bookmark_border';
-    var bookmarkClass = book.saved ? 'bookmark-btn saved' : 'bookmark-btn';
 
     var categories = ["Don't read", "Reading", "Want to read", "Finished", "On hold"];
     var optionsHtml = categories.map(function(cat) {
-        return '<a href="#" class="dropdown-item" onclick="selectCardCategory(event, ' + index + ', \'' + cat + '\')">' + cat + '</a>';
+        return '<a href="#" class="dropdown-item" onclick="selectCardCategory(event, \'' + dropId + '\', ' + index + ', this.getAttribute(\'data-cat\'))" data-cat="' + cat + '">' + categoryLabel(cat) + '</a>';
     }).join('');
 
     card.innerHTML = `
@@ -354,22 +423,21 @@ function createBookCard(book, index) {
             </div>
             <div class="book-bottom">
                 <div style="position:relative;">
-                    <button type="button" class="category-btn" onclick="toggleCardCatDropdown(event, ${index})">
-                        <span>${book.category}</span>
+                    <button type="button" class="category-btn" onclick="toggleCardCatDropdown(event, '${dropId}')">
+                        <span>${categoryLabel(book.category)}</span>
                         <span class="material-symbols-outlined" style="font-size:18px;">arrow_drop_down</span>
                     </button>
-                    <div class="cat-dropdown" id="cardCatDropdown-${index}" style="display:none; left:auto; right:0;">
+                    <div class="cat-dropdown" id="${dropId}" style="display:none; left:auto; right:0;">
                         ${optionsHtml}
                     </div>
                 </div>
-                <span class="material-symbols-outlined ${bookmarkClass}" onclick="toggleSaved(${index})">${bookmarkIcon}</span>
+                <span class="material-symbols-outlined bookmark-btn ${book.saved ? 'saved' : ''}" onclick="toggleSaved(${index})">${bookmarkIcon}</span>
             </div>
         </div>
     `;
 
     return card;
 }
-
 
 function filterBooks(filter, btn) {
     document.querySelectorAll('.mybooks-tab').forEach(function(t) {
@@ -400,7 +468,7 @@ async function submitEdit() {
     var errorDiv = document.getElementById('editError');
 
     if (!name || !password) {
-        errorDiv.textContent = 'Please fill in all fields.';
+        errorDiv.textContent = currentLang.edit_fill_fields || 'Please fill in all fields.';
         errorDiv.style.display = 'block';
         return;
     }
@@ -434,7 +502,7 @@ document.addEventListener('click', function(e) {
         if (catDrop) catDrop.style.display = 'none';
     }
 
-    document.querySelectorAll('.cat-dropdown[id^="cardCatDropdown-"]').forEach(function(d) {
+    document.querySelectorAll('.cat-dropdown[id^="addCatDropdown-"], .cat-dropdown[id^="myCatDropdown-"]').forEach(function(d) {
         var btn = d.previousElementSibling;
         if (!d.contains(e.target) && btn && !btn.contains(e.target)) {
             d.style.display = 'none';
@@ -447,6 +515,12 @@ document.addEventListener('click', function(e) {
         if (!modal.contains(e.target) && !addBtn.contains(e.target)) {
             closeModal();
         }
+    }
+
+    var langWrap = document.getElementById('langBtnWrap');
+    if (langWrap && !langWrap.contains(e.target)) {
+        var langDrop = document.getElementById('langDropdown');
+        if (langDrop) langDrop.style.display = 'none';
     }
 });
 

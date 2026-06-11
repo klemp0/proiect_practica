@@ -1,29 +1,5 @@
 [
     {
-        "title": "Project Hail Mary",
-        "author": "Andy Weir",
-        "cover": "https:\/\/covers.openlibrary.org\/b\/id\/11200092-M.jpg",
-        "genres": [
-            "Science",
-            "Fiction",
-            "Science fiction"
-        ],
-        "category": "Reading",
-        "saved": false
-    },
-    {
-        "title": "The Silent Patient",
-        "author": "Alex Michaelides",
-        "cover": "https:\/\/covers.openlibrary.org\/b\/id\/9407338-M.jpg",
-        "genres": [
-            "Fiction",
-            "Thriller",
-            "Art"
-        ],
-        "category": "On hold",
-        "saved": false
-    },
-    {
         "title": "The Hobbit",
         "author": "Charles Dixon",
         "cover": "https:\/\/covers.openlibrary.org\/b\/id\/8406766-M.jpg",
@@ -32,28 +8,6 @@
             "Fantasy"
         ],
         "category": "Don't read",
-        "saved": false
-    },
-    {
-        "title": "The Midnight Library",
-        "author": "Matt Haig",
-        "cover": "https:\/\/covers.openlibrary.org\/b\/id\/10313767-M.jpg",
-        "genres": [
-            "Fiction",
-            "Science fiction",
-            "Fantasy"
-        ],
-        "category": "On hold",
-        "saved": false
-    },
-    {
-        "title": "Tomorrow, and Tomorrow, and Tomorrow",
-        "author": "Gabrielle Zevin",
-        "cover": "https:\/\/covers.openlibrary.org\/b\/id\/12859975-M.jpg",
-        "genres": [
-            "Fiction"
-        ],
-        "category": "Reading",
-        "saved": false
+        "saved": true
     }
 ]

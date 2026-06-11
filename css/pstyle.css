@@ -103,9 +103,12 @@ body::-webkit-scrollbar {
   font-family: 'Lato', sans-serif;
   padding: 6px 4px;
   font-weight: 400;
-  width: 90px;
+  width: 110px;
   text-align: center;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nav-link:hover { font-weight: 550; }
@@ -140,6 +143,50 @@ body::-webkit-scrollbar {
 }
 
 .nav-btn:hover { background: var(--bg-tab-switcher); }
+
+.lang-btn-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text-accent);
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  position: relative;
+}
+
+.lang-btn-wrap:hover { background: var(--bg-tab-switcher); }
+
+.lang-btn-wrap .material-symbols-outlined { font-size: 18px; }
+
+.lang-dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px;
+  min-width: 70px;
+  box-shadow: 0 4px 12px rgba(91,61,34,0.1);
+  z-index: 100;
+}
+
+.lang-option {
+  display: block;
+  padding: 7px 12px;
+  font-size: 13px;
+  color: var(--text-accent);
+  text-decoration: none;
+  border-radius: 6px;
+  font-family: 'Lato', sans-serif;
+}
+
+.lang-option:hover { background: var(--bg-tab-switcher); }
 
 .nav-account {
   display: flex;
