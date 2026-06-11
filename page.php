@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["user_name"])) {
-    header("Location: /proiect_practica/index.php");
+    header("Location: /MyLibrary/index.php");
     exit();
 }
 ?>
@@ -152,17 +152,17 @@ if (!isset($_SESSION["user_name"])) {
       </div>
       <div class="footer-right">
         <div class="feedback-title" data-i18n="feedback">Feedback</div>
-        <div class="footer-field">
-          <label class="footer-label" data-i18n="feedback_email">e-mail</label>
-          <input class="footer-input" type="email" placeholder="email@example.com">
-        </div>
-        <div class="footer-field">
-          <label class="footer-label" data-i18n="feedback_message">message</label>
-          <textarea class="footer-textarea" placeholder="Write your message here..."></textarea>
-        </div>
-        <button class="send-btn">
-          <span class="material-symbols-outlined">send</span> <span data-i18n="send">Send</span>
-        </button>
+<div class="footer-field">
+  <label class="footer-label" data-i18n="feedback_email">e-mail</label>
+  <input class="footer-input" type="email" id="feedbackEmail" placeholder="email@example.com">
+</div>
+<div class="footer-field">
+  <label class="footer-label" data-i18n="feedback_message">message</label>
+  <textarea class="footer-textarea" id="feedbackMessage" placeholder="Write your message here..."></textarea>
+</div>
+<button class="send-btn" onclick="submitFeedback()">
+  <span class="material-symbols-outlined">send</span> <span data-i18n="send">Send</span>
+</button>
       </div>
     </div>
     <div class="footer-bottom">
@@ -189,6 +189,8 @@ if (!isset($_SESSION["user_name"])) {
   <div id="editError" class="error-msg" style="display:none;"></div>
   <button class="submit-btn" style="margin-top:8px; width:100%; justify-content:center;" onclick="submitEdit()" data-i18n="edit_save">Save</button>
 </div>
+
+<div id="feedbackToast" class="toast"></div>
 
 <script src="js/pscript.js"></script>
 </body>

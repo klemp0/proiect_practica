@@ -967,3 +967,59 @@ body {
     padding: 20px 16px;
   }
 }
+
+:root {
+  --success-bg: #E8F5E9;
+  --success-border: #A5D6A7;
+  --success-text: #2E7D32;
+}
+ 
+[data-theme="dark"] {
+  --success-bg: #1B3320;
+  --success-border: #3D6B43;
+  --success-text: #81C784;
+}
+ 
+.success-msg {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success-text);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Lato', sans-serif;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 320px;
+}
+ 
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+ 
+.toast.error {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-text);
+}
+ 
+.toast.success {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success-text);
+}
