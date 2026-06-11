@@ -97,10 +97,11 @@ function showSection(section) {
     document.getElementById('btnMyBooks').classList.remove('active');
 
     if (section === 'addBooks') {
+        closeModal();
         document.getElementById('addBooks').style.display = 'flex';
         var btn = document.getElementById('btnAddBooks');
         btn.classList.add('active');
-        moveIndicator(btn);
+        setTimeout(function() { moveIndicator(btn); }, 10);
     } else {
         document.getElementById('myBooks').style.display = 'block';
         var btn = document.getElementById('btnMyBooks');
@@ -530,3 +531,11 @@ window.onload = function() {
         moveMybooksIndicator(document.querySelector('.mybooks-tab.active'));
     });
 };
+
+window.addEventListener('resize', function() {
+    var activeNavBtn = document.querySelector('.nav-link.active');
+    if (activeNavBtn) moveIndicator(activeNavBtn);
+
+    var activeMybooksTab = document.querySelector('.mybooks-tab.active');
+    if (activeMybooksTab) moveMybooksIndicator(activeMybooksTab);
+});
