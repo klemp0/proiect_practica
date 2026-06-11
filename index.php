@@ -11,7 +11,7 @@ if (isset($_SESSION["flash_email"])) {
     unset($_SESSION["flash_email"]);
 }
 if (isset($_SESSION["user_name"])) {
-    header("Location: /proiect_practica/page.php");
+    header("Location: /MyLibrary/page.php");
     exit();
 }
 ?>

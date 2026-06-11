@@ -539,3 +539,64 @@ window.addEventListener('resize', function() {
     var activeMybooksTab = document.querySelector('.mybooks-tab.active');
     if (activeMybooksTab) moveMybooksIndicator(activeMybooksTab);
 });
+
+var toastTimeout;
+ 
+function showToast(message, type) {
+    var toast = document.getElementById('feedbackToast');
+    if (!toast) return;
+ 
+    clearTimeout(toastTimeout);
+ 
+    toast.textContent = message;
+    toast.className = 'toast ' + type; 
+
+    requestAnimationFrame(function() {
+        toast.classList.add('show');
+    });
+
+    toastTimeout = setTimeout(function() {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+function validateEmail(email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+ 
+async function submitFeedback() {
+    var emailInput = document.getElementById('feedbackEmail');
+    var messageInput = document.getElementById('feedbackMessage');
+ 
+    var email = emailInput.value.trim();
+    var message = messageInput.value.trim();
+
+    if (email === '' || message === '') {
+        showToast(currentLang.feedback_fill_fields || 'Please fill in all fields.', 'error');
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        showToast(currentLang.feedback_invalid_email || 'Please enter a valid email address.', 'error');
+        return;
+    }
+ 
+    var response = await fetch('php/feedback.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, message: message })
+    });
+ 
+    var result = await response.json();
+ 
+    if (result.success) {
+        showToast(currentLang.feedback_success || 'Thank you! Your message has been sent.', 'success');
+        emailInput.value = '';
+        messageInput.value = '';
+    } else if (result.error === 'fill_fields') {
+        showToast(currentLang.feedback_fill_fields || 'Please fill in all fields.', 'error');
+    } else if (result.error === 'invalid_email') {
+        showToast(currentLang.feedback_invalid_email || 'Please enter a valid email address.', 'error');
+    }
+}
