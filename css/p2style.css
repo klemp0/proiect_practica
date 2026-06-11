@@ -22,10 +22,20 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 6px 16px;
+  padding: 6px 0;
   font-weight: 400;
-  min-width: 100px;
+  width: 110px;
   text-align: center;
+  flex-shrink: 0;
+}
+
+.tab-text {
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: inherit;
 }
 
 .mybooks-tab:hover { font-weight: 550; }

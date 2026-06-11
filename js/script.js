@@ -1,3 +1,38 @@
+var currentLang = {};
+
+async function loadLang(lang) {
+    var response = await fetch('lang/lang.json?t=' + Date.now());
+    var data = await response.json();
+    currentLang = data[lang] || data['en'];
+    applyLang();
+    var label = document.getElementById('langLabel');
+    if (label) label.textContent = lang.toUpperCase();
+}
+
+function applyLang() {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (currentLang[key]) el.textContent = currentLang[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n-placeholder');
+        if (currentLang[key]) el.placeholder = currentLang[key];
+    });
+}
+
+function toggleLangDropdown() {
+    var dropdown = document.getElementById('langDropdown');
+    dropdown.style.display = (dropdown.style.display === 'none') ? 'block' : 'none';
+}
+
+function setLang(event, lang) {
+    event.preventDefault();
+    event.stopPropagation();
+    localStorage.setItem('lang', lang);
+    document.getElementById('langDropdown').style.display = 'none';
+    loadLang(lang);
+}
+
 function applyTheme(theme) {
     if (theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -21,8 +56,16 @@ function toggleTheme() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var saved = localStorage.getItem('theme') || 'light';
-    applyTheme(saved);
+    applyTheme(localStorage.getItem('theme') || 'light');
+    loadLang(localStorage.getItem('lang') || 'en');
+});
+
+document.addEventListener('click', function(e) {
+    var wrap = document.getElementById('langBtnWrap');
+    if (wrap && !wrap.contains(e.target)) {
+        var dropdown = document.getElementById('langDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+    }
 });
 
 function showRegister() {
@@ -37,7 +80,6 @@ function showLogin() {
 
 function togglePassword(inputId, icon) {
     var input = document.getElementById(inputId);
-
     if (input.type === "password") {
         input.type = "text";
         icon.textContent = "visibility_off";
@@ -50,7 +92,6 @@ function togglePassword(inputId, icon) {
 function toggleRegisterPasswords(icon) {
     var password = document.getElementById("registerPassword");
     var repeat = document.getElementById("repeatPassword");
-
     if (password.type === "password") {
         password.type = "text";
         repeat.type = "text";
@@ -63,21 +104,14 @@ function toggleRegisterPasswords(icon) {
 }
 
 document.addEventListener("click", function(e) {
-
     if (!e.target.closest(".password-box")) {
-
         var login = document.getElementById("loginPassword");
-        if (login) {
-            login.type = "password";
-        }
-
+        if (login) login.type = "password";
         var register = document.getElementById("registerPassword");
         var repeat = document.getElementById("repeatPassword");
-
         if (register) register.type = "password";
         if (repeat) repeat.type = "password";
-
-        document.querySelectorAll(".password-icon").forEach(icon => {
+        document.querySelectorAll(".password-icon").forEach(function(icon) {
             icon.textContent = "visibility";
         });
     }
@@ -89,23 +123,21 @@ if (window.location.search.indexOf('form=register') !== -1) {
 }
 
 document.getElementById('registerForm').querySelector('form').onsubmit = function(e) {
-    
     var name = document.querySelector('#registerForm input[name="name"]').value;
     var email = document.querySelector('#registerForm input[name="email"]').value;
     var password = document.querySelector('#registerForm input[name="password"]').value;
     var repeat = document.querySelector('#registerForm input[name="repeat_password"]').value;
-    
+
     var old = document.getElementById('register-error');
     if (old) old.remove();
-    
-    var error = '';
 
+    var error = '';
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (name == '' || email == '' || password == '' || repeat == '') {
         error = 'Please fill in all fields.';
     } else if (!emailRegex.test(email)) {
-        error = 'Invalid email address. Forbidden characters or wrong format.';
+        error = 'Invalid email address.';
     } else if (password.length < 8) {
         error = 'Password is too short. At least 8 characters.';
     } else if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
